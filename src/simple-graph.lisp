@@ -1,5 +1,8 @@
 (defpackage simple-graph
   (:use :cl)
+  (:export #:graph #:make-graph #:graph-nodes #:graph-edges
+           #:add-node #:add-edge
+           #:to-dot)
   (:documentation "A very simple Graph library."))
 
 (defstruct graph
