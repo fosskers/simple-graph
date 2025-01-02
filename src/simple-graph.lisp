@@ -5,14 +5,19 @@
            #:to-dot)
   (:documentation "A very simple Graph library."))
 
+(in-package :simple-graph)
+
 (defstruct graph
   "Lists of nodes and edges. No attempts to be clever are made."
   (nodes nil :type list)
   (edges nil :type list))
 
 (defun add-node (graph node)
-  "Mutably add some NODE data to a GRAPH."
-  (push node (graph-nodes graph)))
+  "Mutably add some NODE data to a GRAPH. Avoids adding the same node twice. Yields
+T when a new node was successfully added, NIL otherwise."
+  (cond ((member node (graph-nodes graph) :test #'equal) nil)
+        (t (push node (graph-nodes graph))
+           t)))
 
 (defun add-edge (graph from to)
   "Add an edge between two nodes. The edge ids should be `equal' to the
@@ -33,6 +38,8 @@ corresponding node values themselves, but nothing enforces this."
 
 #++
 (let ((g (make-graph)))
+  (add-node g "A")
+  (add-node g "A")
   (add-node g "A")
   (add-node g "B")
   (add-node g "C")
