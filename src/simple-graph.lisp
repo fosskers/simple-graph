@@ -40,6 +40,34 @@ same nodes can be added."
   (add-edge g :c :d)
   g)
 
+(defun leaf? (graph node)
+  "Is the given NODE a leaf node?"
+  (and (gethash node (graph-nodes graph))
+       (null (gethash node (graph-edges graph)))))
+
+#++
+(let ((g (make-graph)))
+  (add-node g :a)
+  (leaf? g :a))
+
+(defun leaves (graph)
+  "A list of all the current leaf nodes."
+  (let ((ls '()))
+    (maphash (lambda (node _)
+               (declare (ignore _))
+               (when (leaf? graph node)
+                 (push node ls)))
+             (graph-nodes graph))
+    ls))
+
+#++
+(let ((g (make-graph)))
+  (add-node g :a)
+  (add-node g :b)
+  (add-node g :c)
+  (add-edge g :a :c)
+  (leaves g))
+
 (defun to-dot-with-stream (graph stream)
   "Write the GRAPH in dot format to some STREAM."
   (format stream "graph {~%")
