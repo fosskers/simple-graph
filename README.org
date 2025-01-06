@@ -19,6 +19,8 @@ implementations.
 
 * Usage
 
+** Importing
+
 When importing, you should probably use a nickname:
 
 #+begin_src lisp
@@ -27,9 +29,11 @@ When importing, you should probably use a nickname:
 
 Although the examples below use =in-package= directly for brevity.
 
-** The =graph= Type
+** API
 
-*** make-graph, graph-nodes, graph-edges
+*** The =graph= Type
+
+**** make-graph, graph-nodes, graph-edges
 
 The =graph= itself is just a simple struct with a two Hash Tables:
 
@@ -51,7 +55,7 @@ To create one:
 As you can see, =graph-nodes= and =graph-edges= can be used to access the struct
 fields.
 
-*** add-node!, add-edge!
+**** add-node!, add-edge!
 
 To mutably add entries to the graph (hence the =!=):
 
@@ -75,7 +79,7 @@ Note that:
 - Multiple edges can be added between two of the same node.
 - Edges between non-existent nodes can be added.
 
-*** leaf?, leaves
+**** leaf?, leaves
 
 Is some given node a leaf node (i.e. has no outbound edges)?
 
@@ -107,7 +111,7 @@ To fetch all the leaves:
 #+RESULTS:
 : (:C :B)
 
-*** subgraph
+**** subgraph
 
 To yield a new subgraph =graph= that starts from a given node (or nodes):
 
@@ -131,9 +135,9 @@ To yield a new subgraph =graph= that starts from a given node (or nodes):
 
 If visualised (see =to-dot= below), we would see only =a -> c=.
 
-** Visualisation
+*** Visualisation
 
-*** to-dot, to-dot-with-stream
+**** to-dot, to-dot-with-stream
 
 #+begin_src lisp :exports both :results verbatim
 (in-package :simple-graph)
