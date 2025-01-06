@@ -131,4 +131,4 @@ starting nodes."
   (add-edge! g "C" "D")
   (add-edge! g "E" "F")
   (with-open-file (stream #p"deps.dot" :direction :output :if-exists :supersede)
-    (format stream (simple-graph:to-dot (subgraph g "A")))))
+    (simple-graph:to-dot-with-stream (subgraph g "A") stream)))
