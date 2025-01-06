@@ -178,8 +178,11 @@ Similarly, to write a graph's DOT format directly to a file:
   (add-node! g "A")
   (add-node! g "B")
   (add-node! g "C")
+  (add-node! g "D")
   (add-edge! g "A" "B")
   (add-edge! g "A" "C")
+  (add-edge! g "B" "D")
+  (add-edge! g "C" "D")
   (with-open-file (stream #p"deps.dot" :direction :output :if-exists :supersede)
     (to-dot-with-stream g stream)))
 #+end_src
