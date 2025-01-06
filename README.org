@@ -12,6 +12,19 @@ Keep in mind that:
 - Edge weights are not supported.
 - Other than =subgraph=, no fancy algorithms are provided.
 
+* Table of Contents :TOC_5_gh:noexport:
+- [[#compatibility][Compatibility]]
+- [[#usage][Usage]]
+  - [[#importing][Importing]]
+  - [[#api][API]]
+    - [[#the-graph-type][The =graph= Type]]
+      - [[#make-graph-graph-nodes-graph-edges][make-graph, graph-nodes, graph-edges]]
+      - [[#add-node-add-edge][add-node!, add-edge!]]
+      - [[#leaf-leaves][leaf?, leaves]]
+      - [[#subgraph][subgraph]]
+    - [[#visualisation][Visualisation]]
+      - [[#to-dot-to-dot-with-stream][to-dot, to-dot-with-stream]]
+
 * Compatibility
 
 Written using only standard Common Lisp, so should be portable to all
