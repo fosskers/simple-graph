@@ -3,7 +3,7 @@
   (:export #:graph #:make-graph #:graph-nodes #:graph-edges
            #:add-node! #:add-edge!
            #:leaf? #:leaves
-           #:subgraph #:node-to #:path-to
+           #:subgraph #:nodes-to #:paths-to
            #:to-dot #:to-dot-with-stream)
   (:documentation "A very simple Graph library."))
 
@@ -97,16 +97,15 @@ starting nodes."
   (add-edge! g :d :e)
   (subgraph g :a))
 
-(defun node-to (graph node)
-  "Find a node with an edge another given NODE."
+(defun nodes-to (graph node)
+  "All nodes with a directed edge to a given NODE."
   (with-hash-table-iterator (iter (graph-edges graph))
-    (labels ((recurse ()
+    (labels ((recurse (acc)
                (multiple-value-bind (entry-p n edges) (iter)
-                 (when entry-p
-                   (if (member node edges)
-                       n
-                       (recurse))))))
-      (recurse))))
+                 (cond ((not entry-p) acc)
+                       ((member node edges) (recurse (cons n acc)))
+                       (t (recurse acc))))))
+      (recurse '()))))
 
 #++
 (let ((g (make-graph)))
@@ -118,16 +117,17 @@ starting nodes."
   (add-edge! g :a :b)
   (add-edge! g :b :d)
   (add-edge! g :c :d)
-  (node-to g :d))
+  (nodes-to g :d))
 
-(defun path-to (graph node)
-  "Find a route from some root to a given NODE."
-  (labels ((recurse (acc)
-             (let ((next (node-to graph (car acc))))
-               (if next
-                   (recurse (cons next acc))
-                   acc))))
-    (recurse (list node))))
+(defun paths-to (graph node)
+  "Find all paths that lead to NODE."
+  (let ((to (nodes-to graph node)))
+    (cond ((null to) (list (list node)))
+          (t (apply #'append
+                    (mapcar (lambda (n)
+                              (mapcar (lambda (path) (cons node path))
+                                      (paths-to graph n)))
+                            to))))))
 
 #++
 (let ((g (make-graph)))
@@ -139,7 +139,7 @@ starting nodes."
   (add-edge! g :a :b)
   (add-edge! g :b :d)
   (add-edge! g :c :d)
-  (path-to g :d))
+  (paths-to g :d))
 
 (defun to-dot-with-stream (graph stream)
   "Write the GRAPH in dot format to some STREAM."
