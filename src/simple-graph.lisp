@@ -3,7 +3,7 @@
   (:export #:graph #:make-graph #:graph-nodes #:graph-edges
            #:add-node! #:add-edge!
            #:leaf? #:leaves
-           #:subgraph
+           #:subgraph #:node-to #:path-to
            #:to-dot #:to-dot-with-stream)
   (:documentation "A very simple Graph library."))
 
@@ -96,6 +96,50 @@ starting nodes."
   (add-edge! g :a :c)
   (add-edge! g :d :e)
   (subgraph g :a))
+
+(defun node-to (graph node)
+  "Find a node with an edge another given NODE."
+  (with-hash-table-iterator (iter (graph-edges graph))
+    (labels ((recurse ()
+               (multiple-value-bind (entry-p n edges) (iter)
+                 (when entry-p
+                   (if (member node edges)
+                       n
+                       (recurse))))))
+      (recurse))))
+
+#++
+(let ((g (make-graph)))
+  (add-node! g :a)
+  (add-node! g :b)
+  (add-node! g :c)
+  (add-node! g :d)
+  (add-edge! g :a :c)
+  (add-edge! g :a :b)
+  (add-edge! g :b :d)
+  (add-edge! g :c :d)
+  (node-to g :d))
+
+(defun path-to (graph node)
+  "Find a route from some root to a given NODE."
+  (labels ((recurse (acc)
+             (let ((next (node-to graph (car acc))))
+               (if next
+                   (recurse (cons next acc))
+                   acc))))
+    (recurse (list node))))
+
+#++
+(let ((g (make-graph)))
+  (add-node! g :a)
+  (add-node! g :b)
+  (add-node! g :c)
+  (add-node! g :d)
+  (add-edge! g :a :c)
+  (add-edge! g :a :b)
+  (add-edge! g :b :d)
+  (add-edge! g :c :d)
+  (path-to g :d))
 
 (defun to-dot-with-stream (graph stream)
   "Write the GRAPH in dot format to some STREAM."
