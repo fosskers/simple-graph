@@ -1,7 +1,7 @@
 #+title: simple-graph
 
 Wow, what a simple graph. Sometimes you just want to add some nodes and edges,
-and see what it looks like, right? This library lets you do that. It has no
+and see what it all looks like, right? This library lets you do that. It has no
 dependencies.
 
 Keep in mind that:
@@ -10,7 +10,7 @@ Keep in mind that:
   strings and can be compared via =#'equal=.
 - All edges are directed.
 - Edge weights are not supported.
-- Other than =subgraph=, no fancy algorithms are provided.
+- Other than =subgraph= and =paths-to=, no fancy algorithms are provided.
 
 * Table of Contents :TOC_5_gh:noexport:
 - [[#compatibility][Compatibility]]
@@ -21,6 +21,7 @@ Keep in mind that:
       - [[#make-graph-graph-nodes-graph-edges][make-graph, graph-nodes, graph-edges]]
       - [[#add-node-add-edge][add-node!, add-edge!]]
       - [[#leaf-leaves][leaf?, leaves]]
+      - [[#nodes-to-paths-to][nodes-to, paths-to]]
       - [[#subgraph][subgraph]]
     - [[#visualisation][Visualisation]]
       - [[#to-dot-to-dot-with-stream][to-dot, to-dot-with-stream]]
@@ -123,6 +124,46 @@ To fetch all the leaves:
 
 #+RESULTS:
 : (:C :B)
+
+**** nodes-to, paths-to
+
+To find all nodes with a directed edge to some given node:
+
+#+begin_src lisp :exports both :results verbatim
+(in-package :simple-graph)
+(let ((g (make-graph)))
+  (add-node! g :a)
+  (add-node! g :b)
+  (add-node! g :c)
+  (add-node! g :d)
+  (add-edge! g :a :c)
+  (add-edge! g :a :b)
+  (add-edge! g :b :d)
+  (add-edge! g :c :d)
+  (nodes-to g :d))
+#+end_src
+
+#+RESULTS:
+: (:C :B)
+
+All paths that lead to a given node. The result sublists are in reverse order:
+
+#+begin_src lisp :exports both :results verbatim
+(in-package :simple-graph)
+(let ((g (make-graph)))
+  (add-node! g :a)
+  (add-node! g :b)
+  (add-node! g :c)
+  (add-node! g :d)
+  (add-edge! g :a :c)
+  (add-edge! g :a :b)
+  (add-edge! g :b :d)
+  (add-edge! g :c :d)
+  (paths-to g :d))
+#+end_src
+
+#+RESULTS:
+: ((:D :C :A) (:D :B :A))
 
 **** subgraph
 
