@@ -11,8 +11,8 @@
 
 (defstruct graph
   "Hash Tables of nodes and edges."
-  (nodes (make-hash-table :test #'equal) :type hash-table)
-  (edges (make-hash-table :test #'equal) :type hash-table))
+  (nodes (make-hash-table :test #'equalp) :type hash-table)
+  (edges (make-hash-table :test #'equalp) :type hash-table))
 
 (defun add-node! (graph node)
   "Mutably add some NODE data to a GRAPH. Avoids adding the same node twice. Yields
@@ -113,7 +113,7 @@ starting nodes."
     (labels ((recurse (acc)
                (multiple-value-bind (entry-p n edges) (iter)
                  (cond ((not entry-p) acc)
-                       ((member node edges) (recurse (cons n acc)))
+                       ((member node edges :test #'equalp) (recurse (cons n acc)))
                        (t (recurse acc))))))
       (recurse '()))))
 
