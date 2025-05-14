@@ -20,6 +20,7 @@ Keep in mind that:
       - [[#make-graph-graph-nodes-graph-edges][make-graph, graph-nodes, graph-edges]]
       - [[#add-node-add-edge][add-node!, add-edge!]]
       - [[#leaf-leaves][leaf?, leaves]]
+    - [[#algorithms][Algorithms]]
       - [[#nodes-to-paths-to][nodes-to, paths-to]]
       - [[#subgraph][subgraph]]
       - [[#flip-edges][flip-edges]]
@@ -124,6 +125,9 @@ To fetch all the leaves:
 
 #+RESULTS:
 : (:C :B)
+
+
+*** Algorithms
 
 **** nodes-to, paths-to
 
