@@ -3,7 +3,7 @@
   (:export #:graph #:make-graph #:graph-nodes #:graph-edges
            #:add-node! #:add-edge!
            #:leaf? #:leaves
-           #:subgraph #:nodes-to #:paths-to
+           #:subgraph #:nodes-to #:paths-to #:flip-edges
            #:to-dot #:to-dot-with-stream)
   (:documentation "A very simple Graph library."))
 
@@ -69,6 +69,16 @@ same nodes can be added."
   (add-node! g :c)
   (add-edge! g :a :c)
   (leaves g))
+
+(defun flip-edges (graph)
+  "Flip all the graph edges."
+  (let ((new (make-graph)))
+    (setf (graph-nodes new) (graph-nodes graph))
+    (maphash (lambda (node0 nodes0)
+               (dolist (node1 nodes0)
+                 (add-edge! new node1 node0)))
+             (graph-edges graph))
+    new))
 
 (defun subgraph (graph from &rest rest)
   "Form a new subgraph made up of all the nodes and edges reachable from some given
