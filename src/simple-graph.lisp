@@ -158,7 +158,7 @@ starting nodes."
     (format stream "graph {~%")
     (maphash (lambda (node _)
                (declare (ignore _))
-               (format stream "  ~a [label=\"~a\"];~%" curr node)
+               (format stream "  ~a [label=\"~a\", shape=rectangle];~%" curr node)
                (setf (gethash node ixs) curr)
                (incf curr))
              (graph-nodes graph))

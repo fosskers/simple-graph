@@ -1,5 +1,11 @@
 # simple-graph
 
+## Unreleased
+
+#### Changed
+
+- Use `shape=rectangle` for DOT nodes.
+
 ## 1.1.0 (2025-05-15)
 
 #### Added
